@@ -132,3 +132,105 @@ They inherit this from the surrounding scope.
 -    Scope → where variables live
 -    Closure → functions remember scope
 -    this → decided at call time
+
+
+# Controlling `this` (call, apply, bind)
+
+## Why do we need to control `this`?
+
+### What I Thought Initially
+-    JavaScript always knows what `this` should be
+-    I don't need to manually change `this`
+
+### What I Learned
+
+-    `this` depends on how a function is called
+-    When a function is detached from its object, `this` is often lost -    JavaScript provides call, apply, and bind to manually set `this`
+
+>    `call`, `apply`, and `bind` do not change the function
+>    They only change how it is executed
+
+## `call` - invoke immediately with a custom `this`
+
+````js
+function greet(){
+    return `Hello, ${this.name}`
+}
+
+const user = {name: 'John'}
+
+greet();
+//Hello, undefined (or window.name)
+
+greet.call(user);
+//Hello, John
+````
+###    `call`:
+-    Executes the function immediately
+-    First argument = value of `this`
+-    Next arguments = function parameters
+
+##    `apply` - same as call, different arguments
+
+````js
+function sum(a, b){
+    return a + b;
+}
+
+sum.apply(null, [2, 3]); // 5
+sum.call(null, 2, 3); //5
+````
+### `apply` VS `call`
+
+-    `call` -> arguments separated by comma
+-    `apply` -> arguments as an array
+-    In modern JS, `apply` is less common because of spread(...)
+
+
+## `bind` - does NOT execute immediately
+
+````js
+function greet(){
+    return `Hello, ${this.name}`;
+}
+
+const user = {name: 'john'}
+
+const boundGreet = greet.bind(user);
+
+boundGreet();    //Hello, John
+````
+
+### `bind`:
+-    Returns a new function
+-    Permanently binds `this` to that function
+-    Does not execute, just prepares
+
+> bind is mostly used for callbacks and event handlers
+
+##    Real-world example
+````js
+const user = {
+    name: 'John',
+    sayName(){
+        setTimeout(function(){
+            console.log(this.name);
+        }, 1000);
+    },
+};
+
+user.sayName(); // undefined
+
+````
+### Solve with `bind`:
+````js
+setTimeout(function(){
+    console.log(this.name);
+}.bind(this), 1000)
+
+````
+
+### Common Mistakes
+- Thinking `bind` executes the function
+- Using arrow functions when `this` is needed
+- Forgetting that `call` and `apply` execute immediately
