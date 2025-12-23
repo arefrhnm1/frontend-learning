@@ -16,7 +16,7 @@ Scope, closure, and `this` explain:
 
 ---
 
-## Scope
+# Scope
 
 ### What I Thought Initially
 
@@ -57,7 +57,7 @@ foo();
 Key Rule
 Inner scopes can access outer scopes, but not the other way around.
 
-## Closure
+# Closure
 ### What I Thought Initially
 Closure is an advanced or rare concept.
 
@@ -93,7 +93,7 @@ increment(); // 2
 -    Event handlers
 -    Encapsulation without classes
 
-## this
+# this
 
 ### What I Thought Initially
 >    this refers to the function itself.
